@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Navneet Nandan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#0a0a0f;
+      --surface:#111118;
+      --card:#16161f;
+      --border:#2a2a3a;
+      --accent:#7f77dd;
+      --accent2:#1d9e75;
+      --text:#e8e8f0;
+      --muted:#888890;
+      --mono:'Space Mono',monospace;
+      --sans:'Syne',sans-serif;
+    }
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+
+    .noise{position:fixed;inset:0;opacity:.03;pointer-events:none;z-index:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:200px;}
+
+    .grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+      background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+      background-size:60px 60px;opacity:.25;}
+
+    .container{max-width:900px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+
+    /* NAV */
+    nav{padding:24px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+    .logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.1em;}
+    .nav-links{display:flex;gap:24px;}
+    .nav-links a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:.08em;transition:color .2s;}
+    .nav-links a:hover{color:var(--text);}
+
+    /* HERO */
+    .hero{padding:80px 0 60px;}
+    .hero-tag{font-family:var(--mono);font-size:11px;color:var(--accent2);letter-spacing:.15em;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+    .hero-tag::before{content:'';display:inline-block;width:24px;height:1px;background:var(--accent2);}
+    h1{font-size:clamp(42px,7vw,76px);font-weight:800;line-height:1;letter-spacing:-.02em;margin-bottom:8px;}
+    h1 span{color:var(--accent);}
+    .hero-role{font-family:var(--mono);font-size:14px;color:var(--muted);margin-bottom:28px;letter-spacing:.05em;}
+    .hero-desc{font-size:16px;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:36px;}
+    .hero-links{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn{font-family:var(--mono);font-size:12px;padding:10px 20px;border-radius:4px;text-decoration:none;letter-spacing:.08em;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+    .btn-primary{background:var(--accent);color:#fff;border:1px solid var(--accent);}
+    .btn-primary:hover{background:transparent;color:var(--accent);}
+    .btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border);}
+    .btn-outline:hover{border-color:var(--muted);color:var(--text);}
+    .btn-cv{background:transparent;color:var(--accent2);border:1px solid var(--accent2);}
+    .btn-cv:hover{background:var(--accent2);color:#fff;}
+
+    /* STATS */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:48px 0;}
+    .stat{background:var(--card);padding:24px;text-align:center;}
+    .stat-num{font-family:var(--mono);font-size:28px;color:var(--accent);font-weight:700;display:block;}
+    .stat-label{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:.05em;}
+
+    /* SECTION */
+    section{padding:60px 0;}
+    .section-header{display:flex;align-items:center;gap:16px;margin-bottom:40px;}
+    .section-tag{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;padding:4px 10px;border:1px solid var(--accent);border-radius:2px;}
+    .section-line{flex:1;height:1px;background:var(--border);}
+
+    /* SKILLS */
+    .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+    .skill-group{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;}
+    .skill-group-title{font-family:var(--mono);font-size:11px;color:var(--accent2);letter-spacing:.12em;margin-bottom:14px;}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:8px;}
+    .tag{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .15s;cursor:default;}
+    .tag:hover{border-color:var(--accent);color:var(--text);}
+
+    /* PROJECTS */
+    .projects-list{display:flex;flex-direction:column;gap:16px;}
+    .project-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:28px;position:relative;overflow:hidden;transition:border-color .2s;}
+    .project-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);}
+    .project-card:nth-child(2)::before{background:var(--accent2);}
+    .project-card:nth-child(3)::before{background:#d4537e;}
+    .project-card:hover{border-color:#3a3a5a;}
+    .project-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+    .project-name{font-size:17px;font-weight:700;letter-spacing:-.01em;}
+    .project-period{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;padding-top:3px;}
+    .project-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+    .project-stack{display:flex;flex-wrap:wrap;gap:6px;}
+    .stack-tag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px;background:rgba(127,119,221,.12);border:1px solid rgba(127,119,221,.3);color:#afa9ec;}
+    .project-card:nth-child(2) .stack-tag{background:rgba(29,158,117,.1);border-color:rgba(29,158,117,.3);color:#5dcaa5;}
+    .project-card:nth-child(3) .stack-tag{background:rgba(212,83,126,.1);border-color:rgba(212,83,126,.3);color:#ed93b1;}
+
+    /* EDUCATION */
+    .edu-list{display:flex;flex-direction:column;gap:0;}
+    .edu-item{display:grid;grid-template-columns:140px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid var(--border);}
+    .edu-item:last-child{border-bottom:none;}
+    .edu-period{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:4px;}
+    .edu-school{font-size:15px;font-weight:700;}
+    .edu-degree{font-size:13px;color:var(--muted);margin-top:4px;}
+    .edu-score{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:6px;}
+
+    /* CERTS */
+    .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    .cert-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:16px;text-align:center;}
+    .cert-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .cert-date{font-family:var(--mono);font-size:10px;color:var(--muted);}
+
+    .achievement{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;align-items:center;gap:16px;margin-top:24px;}
+    .ach-icon{width:56px;height:56px;border-radius:50%;background:rgba(127,119,221,.15);border:1px solid rgba(127,119,221,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .ach-num{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);}
+    .ach-desc{font-size:14px;color:var(--muted);line-height:1.5;}
+
+    /* CONTACT */
+    .contact-bar{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:40px;}
+    .contact-text h3{font-size:22px;font-weight:800;margin-bottom:4px;}
+    .contact-text p{font-size:14px;color:var(--muted);}
+    .contact-links{display:flex;gap:12px;flex-wrap:wrap;}
+
+    footer{border-top:1px solid var(--border);padding:24px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);}
+
+    @media(max-width:600px){
+      .skills-grid{grid-template-columns:1fr;}
+      .cert-grid{grid-template-columns:1fr;}
+      .edu-item{grid-template-columns:1fr;}
+      .stats{grid-template-columns:1fr;}
+      .contact-bar{flex-direction:column;}
+      .nav-links{gap:14px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="grid-bg"></div>
+
+<div class="container">
+  <nav>
+    <span class="logo">NN_PORTFOLIO</span>
+    <div class="nav-links">
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-tag">available for opportunities</div>
+    <h1>Navneet<br><span>Nandan</span></h1>
+    <div class="hero-role">// full-stack developer &amp; data enthusiast</div>
+    <p class="hero-desc">Building robust web applications and data-driven dashboards. Passionate about clean code, problem solving, and continuous learning.</p>
+    <div class="hero-links">
+      <a href="https://github.com/Navneet-Nandann" target="_blank" class="btn btn-primary">GitHub</a>
+      <a href="https://linkedin.com/in/navneet-nandan" target="_blank" class="btn btn-outline">LinkedIn</a>
+      <a href="/cdn-cgi/l/email-protection#7f111e09111a1a0b111e111b1e114b4d4d3f18121e1613511c1012" class="btn btn-outline">Email</a>
+      <a href="Navneet2.cv.pdf" download="Navneet_Nandan_CV" class="btn btn-cv">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download CV
+      </a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-num">200+</span><div class="stat-label">DSA problems solved</div></div>
+    <div class="stat"><span class="stat-num">3</span><div class="stat-label">featured projects</div></div>
+    <div class="stat"><span class="stat-num">3</span><div class="stat-label">certifications</div></div>
+  </div>
+
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-tag">SKILLS</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">LANGUAGES</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">C++ (DSA)</span>
+          <span class="tag">SQL</span>
+          <span class="tag">OOPs</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">WEB DEVELOPMENT</div>
+        <div class="skill-tags">
+          <span class="tag">React.js</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">Express.js</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">HTML5</span>
+          <span class="tag">CSS3</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">DATA &amp; VISUALISATION</div>
+        <div class="skill-tags">
+          <span class="tag">Tableau</span>
+          <span class="tag">Power BI</span>
+          <span class="tag">Matplotlib</span>
+          <span class="tag">Seaborn</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">DEVOPS &amp; TOOLS</div>
+        <div class="skill-tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Git</span>
+          <span class="tag">GitHub</span>
+          <span class="tag">JWT Auth</span>
+          <span class="tag">REST APIs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-tag">PROJECTS</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-list">
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">Student Management System</div>
+          <div class="project-period">Jan '25 – present</div>
+        </div>
+        <p class="project-desc">A full-stack system to manage student records including profile info, academic data, and document uploads. Features a React dashboard with dynamic forms, RESTful backend, Cloudinary image storage, and JWT authentication with access &amp; refresh tokens.</p>
+        <div class="project-stack">
+          <span class="stack-tag">JavaScript</span>
+          <span class="stack-tag">Node.js</span>
+          <span class="stack-tag">Express.js</span>
+          <span class="stack-tag">React</span>
+          <span class="stack-tag">JWT</span>
+          <span class="stack-tag">Cloudinary</span>
+          <span class="stack-tag">Multer</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">HR Analytics Dashboard</div>
+          <div class="project-period">Dec '25 – Jan '26</div>
+        </div>
+        <p class="project-desc">Interactive Tableau dashboard analyzing employee demographics, salary distribution, hiring trends, and tenure. Implemented dynamic filters for role, department, geography and employment status to enable flexible data exploration.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Tableau</span>
+          <span class="stack-tag">Data Visualization</span>
+          <span class="stack-tag">Dashboard Design</span>
+          <span class="stack-tag">Data Analysis</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-name">Auth-Based Personal Portfolio</div>
+          <div class="project-period">Aug '25 – Nov '25</div>
+        </div>
+        <p class="project-desc">A personal portfolio website with JWT-based authentication (Access &amp; Refresh tokens) to restrict access to authorized users. Secure login and protected routes with a responsive React frontend integrated with REST APIs.</p>
+        <div class="project-stack">
+          <span class="stack-tag">JavaScript</span>
+          <span class="stack-tag">React</span>
+          <span class="stack-tag">Node.js</span>
+          <span class="stack-tag">Express.js</span>
+          <span class="stack-tag">JWT Auth</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-header">
+      <span class="section-tag">EDUCATION</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div class="edu-period">Aug 2023 –<br>present</div>
+        <div>
+          <div class="edu-school">Lovely Professional University</div>
+          <div class="edu-degree">B.Tech — Computer Science &amp; Engineering · Phagwara, Punjab</div>
+          <div class="edu-score">CGPA: 6.9</div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-period">Apr 2020 –<br>Mar 2022</div>
+        <div>
+          <div class="edu-school">Gaya College</div>
+          <div class="edu-degree">Intermediate · Gaya, Bihar</div>
+          <div class="edu-score">79%</div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-period">Apr 2018 –<br>Mar 2019</div>
+        <div>
+          <div class="edu-school">Amar Jyoti School</div>
+          <div class="edu-degree">Matriculation · Bodhgaya, Bihar</div>
+          <div class="edu-score">86.4%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certificates">
+    <div class="section-header">
+      <span class="section-tag">CERTIFICATES</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card"><div class="cert-title">JavaScript</div><div class="cert-date">Oct 2025</div></div>
+      <div class="cert-card"><div class="cert-title">SQL</div><div class="cert-date">Oct 2025</div></div>
+      <div class="cert-card"><div class="cert-title">DSA in C++</div><div class="cert-date">Oct 2025</div></div>
+    </div>
+    <div class="achievement">
+      <div class="ach-icon"><span class="ach-num">200+</span></div>
+      <div class="ach-desc">DSA problems solved on LeetCode and GFG — consistently strengthening algorithmic thinking and problem-solving depth.</div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-tag">CONTACT</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-bar">
+      <div class="contact-text">
+        <h3>Let's build something.</h3>
+        <p>Open to full-stack, backend, or data roles. Drop a message anytime.</p>
+      </div>
+      <div class="contact-links">
+        <a href="/cdn-cgi/l/email-protection#9cf2fdeaf2f9f9e8f2fdf2f8fdf2a8aeaedcfbf1fdf5f0b2fff3f1" class="btn btn-primary"><span class="__cf_email__" data-cfemail="d6b8b7a0b8b3b3a2b8b7b8b2b7b8e2e4e496b1bbb7bfbaf8b5b9bb">[email&#160;protected]</span></a>
+             <a href="https://linkedin.com/in/navneet-nandan" target="_blank" class="btn btn-outline">LinkedIn</a>
+        <a href="Navneet_cv.pages" download="Navneet_Nandan_CV" class="btn btn-cv">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CV
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">built with passion · navneet nandan · 2025</div>
+</footer>
+
+</body>
+</html>
